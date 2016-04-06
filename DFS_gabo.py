@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
 Gabriel Novais e Gabriel Jardim
@@ -60,22 +59,37 @@ def inverte(grafo):
     return(grafo)
     
 #marca nó como explorado
-def explore(nó,explored):
-    explored[nó] = 1
+def explore(no,explored):
+    explored[no-1] = 1
+    return(explored)
+    
     
 #implementação depth first search
 def DFS_loop(grafo,n,t = 0,s = 0):
-#número de arestas(m)   
-    m = len(grafo)
 #cria lista que informa A[i] = 1 se nó i já foi explorado, 0 c.c.
     explored = list(range(0,n))
     for i in range(0,n):
-        explored[i] = 0
+        explored[i] = 0 #usar como otimização alterar somente valor de explored[2]
         
-    for i in reversed(range(n)):
-        if explored[i] == 0:
+    lid=explored #líder do processo de busca(nó inicial de onde começa o ciclo)
+    ft=explored #finishing time: marca a ordem de recursão
+        
+    for i in reversed(range(1,n)): #range dos nós (corrige o maldito inicio em 0)
+        if explored[i-1] == 0:
             s = i
-            DFS(grafo,i)
-    
+            DFS(grafo,n,i,t,s,explored,lid,ft)
+    return(lid,ft)
             
 
+def DFS(grafo,n,no_i,t,s,explored,lid,ft):
+    explore(no_i,explored)
+    lid[i-1] = s
+#para cada nó j
+    for j in range(n):
+        if grafo[j][0] == i-1: #testa se o nó de saída é realmente o no_i
+            if explored(grafo[j][1]-1) == 0: #verifica se o nó de chegada já foi explorado
+                DFS(grafo,grafo[j][1],t,s,explored,lid,ft)
+        t =+ 1
+        ft[j-1]=t
+    return(t,s,explored,lid,ft)
+    
